@@ -30,7 +30,7 @@
     .search-box{display:flex;align-items:center;gap:10px;background:#fff;border-radius:999px;padding:10px 18px;min-width:220px;color:var(--muted);}
     .search-box input{border:none;outline:none;font-size:15px;width:100%;color:var(--ink);background:transparent;}
     .icon-cluster{display:flex;align-items:center;gap:14px;}
-    .icon-circle{width:42px;height:42px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;}
+    .icon-circle{width:42px;height:42px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;}
     .icon-circle svg{width:22px;height:22px;color:var(--navy);}
 
     /* ── Layout ─────────────────────────────── */
@@ -89,21 +89,36 @@
     .btn-quiz-sm.locked{background:#e5e7eb;color:#9ca3af;border:1.5px solid #e5e7eb;cursor:not-allowed;}
     .btn-quiz-sm.unlocked{background:#fff;color:var(--navy);border:1.5px solid var(--navy);cursor:pointer;}
     .btn-quiz-sm.unlocked:hover{background:var(--navy);color:#fff;}
+    .btn-quiz-sm.viewed{background:#e8e9f4;color:var(--navy);border:1.5px solid var(--navy);cursor:pointer;}
+    .btn-quiz-sm.viewed:hover{background:#d0d2ea;}
 
     /* ── Right: Content Area ────────────────── */
     .lesson-content{display:flex;flex-direction:column;overflow-y:auto;padding:28px 36px 40px;gap:20px;background:#f4f5f9;}
+    .lesson-content.welcome-mode{padding:24px;gap:0;background:#f4f5f9;}
     .lesson-header-btn{display:flex;align-items:center;justify-content:space-between;width:100%;background:var(--navy);color:#fff;font-weight:800;font-size:18px;padding:18px 28px;border:none;border-radius:14px;text-align:left;}
 
     /* ── VIEW 1: Welcome ────────────────────── */
-    #view-welcome{display:flex;flex-direction:column;gap:20px;}
-    .welcome-thumb-card{background:var(--thumb);border-radius:20px;height:220px;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);}
-    .welcome-thumb-card svg{width:56px;height:56px;color:#9aa8d4;opacity:.6;}
-    .welcome-stats-card{background:#fff;border-radius:20px;box-shadow:var(--shadow);padding:28px 32px 32px;text-align:center;}
-    .welcome-title{font-size:22px;font-weight:800;color:var(--navy);margin:0 0 28px;line-height:1.3;}
-    .welcome-stats{display:flex;align-items:center;justify-content:center;gap:40px;}
-    .w-stat .num{font-size:32px;font-weight:800;color:var(--navy);display:block;}
-    .w-stat .lbl{font-size:14px;font-weight:700;color:var(--navy);margin-top:4px;}
-    .btn-welcome-continue{display:flex;align-items:center;justify-content:space-between;width:100%;background:var(--navy);color:#fff;font-weight:800;font-size:18px;padding:18px 28px;border:none;border-radius:14px;cursor:pointer;}
+    #view-welcome{display:flex;flex-direction:column;gap:0;background:#fff;border-radius:20px;overflow:hidden;align-self:stretch;margin:0;box-shadow:0 4px 20px rgba(19,23,107,0.1);}
+    /* Hero banner */
+    .welcome-hero{background:linear-gradient(135deg,var(--navy) 0%,#1e2480 60%,#2a3199 100%);padding:48px 48px 52px;position:relative;overflow:hidden;flex-shrink:0;}
+    .welcome-hero::before{content:'';position:absolute;top:-40px;right:-40px;width:220px;height:220px;border-radius:50%;background:rgba(127,233,227,.08);}
+    .welcome-hero::after{content:'';position:absolute;bottom:-60px;right:60px;width:140px;height:140px;border-radius:50%;background:rgba(127,233,227,.06);}
+    .welcome-hero-badge{display:inline-flex;align-items:center;background:rgba(127,233,227,.15);border:1px solid rgba(127,233,227,.35);border-radius:999px;padding:5px 14px;font-size:12px;font-weight:700;color:var(--cyan);letter-spacing:.04em;text-transform:uppercase;margin-bottom:18px;}
+    .welcome-hero-title{font-size:30px;font-weight:900;color:#fff;margin:0 0 10px;line-height:1.2;position:relative;z-index:1;}
+    .welcome-hero-sub{font-size:14px;color:rgba(255,255,255,.65);margin:0;line-height:1.5;position:relative;z-index:1;}
+    /* Stats strip — no icons */
+    .welcome-stats-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:#fff;border-bottom:1px solid var(--line);flex-shrink:0;}
+    .wss-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:22px 16px;border-right:1px solid var(--line);}
+    .wss-item:last-child{border-right:none;}
+    .wss-num{font-size:26px;font-weight:900;color:var(--navy);line-height:1;}
+    .wss-lbl{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;}
+    /* Info card */
+    .welcome-info-card{margin:24px 24px 0;background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:22px 24px;border-left:4px solid var(--cyan);}
+    .welcome-info-card h4{margin:0 0 8px;color:var(--navy);font-size:15px;font-weight:800;}
+    .welcome-info-card p{margin:0;color:var(--muted);font-size:13px;line-height:1.6;}
+    /* Continue */
+    .welcome-continue-wrap{display:flex;justify-content:center;padding:24px;}
+    .btn-welcome-continue{display:inline-flex;align-items:center;padding:15px 52px;background:var(--navy);color:#fff;font-weight:800;font-size:16px;border:none;border-radius:14px;cursor:pointer;box-shadow:0 4px 14px rgba(19,23,107,.3);transition:all .2s;}
     .btn-welcome-continue:hover{background:var(--navy-deep);}
 
     /* ── VIEW 2: Lesson content ─────────────── */
@@ -198,8 +213,15 @@
         <a href="{{ route('notifications.index') }}" class="icon-circle">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
         </a>
-        <a href="{{ route('profile.show') }}" class="icon-circle">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/></svg>
+        <a href="{{ route('profile.show') }}"
+           class="icon-circle"
+           title="{{ $user->name ?? 'Profile' }}"
+           @if($user->avatar_url ?? null)
+               style="background-image:url('{{ $user->avatar_url }}');background-size:cover;background-position:center;overflow:hidden;"
+           @endif>
+            @unless($user->avatar_url ?? null)
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/></svg>
+            @endunless
         </a>
     </div>
 </header>
@@ -287,34 +309,50 @@
 
         {{-- VIEW 1: Welcome --}}
         <div id="view-welcome">
-            <div class="lesson-header-btn">
-                <span id="wh-title">{{ $modules->first()->title ?? 'Module' }}</span>
-                <span>&#x2192;</span>
+
+            {{-- Hero banner --}}
+            <div class="welcome-hero">
+                <div class="welcome-hero-badge">Course Module</div>
+                <h1 class="welcome-hero-title" id="wh-mod-title">{{ $modules->first()->title ?? 'the Course' }}</h1>
+                <p class="welcome-hero-sub">Complete all lessons and pass the quiz to unlock the next module.</p>
             </div>
-            <div class="welcome-thumb-card">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
-                    <rect x="2" y="3" width="20" height="14" rx="2"/>
-                    <path d="M8 21h8M12 17v4"/>
-                </svg>
-            </div>
-            <div class="welcome-stats-card">
-                <h2 class="welcome-title" id="wh-mod-title">Welcome to {{ $modules->first()->title ?? 'the Course' }}</h2>
-                <div class="welcome-stats">
-                    <div class="w-stat"><span class="num" id="ws-mod">{{ $modules->count() }}</span><div class="lbl">Modules</div></div>
-                    <div class="w-stat"><span class="num" id="ws-les">{{ $total_lessons ?? 0 }}</span><div class="lbl">Lessons</div></div>
-                    <div class="w-stat"><span class="num" id="ws-bdg">{{ $badge_count ?? 1 }}</span><div class="lbl">Badge</div></div>
+
+            {{-- Stats strip (no icons) --}}
+            <div class="welcome-stats-strip">
+                <div class="wss-item">
+                    <span class="wss-num" id="ws-mod">{{ $modules->count() }}</span>
+                    <span class="wss-lbl">Modules</span>
+                </div>
+                <div class="wss-item">
+                    <span class="wss-num" id="ws-les">{{ $total_lessons ?? 0 }}</span>
+                    <span class="wss-lbl">Lessons</span>
+                </div>
+                <div class="wss-item">
+                    <span class="wss-num" id="ws-bdg">{{ $badge_count ?? 1 }}</span>
+                    <span class="wss-lbl">Badge</span>
                 </div>
             </div>
-            <button class="btn-welcome-continue" onclick="continueFromWelcome()" type="button">
-                <span>Continue</span><span>&#x2192;</span>
-            </button>
+
+            {{-- Info card --}}
+            <div class="welcome-info-card">
+                <h4>How it works</h4>
+                <p>Work through each lesson at your own pace, mark them complete, then take the module quiz. Pass the quiz to unlock the next module and earn your badge.</p>
+            </div>
+
+            {{-- Continue button --}}
+            <div class="welcome-continue-wrap">
+                <button class="btn-welcome-continue" onclick="continueFromWelcome()" type="button">
+                    Start Learning
+                </button>
+            </div>
+
         </div>
 
         {{-- VIEW 2: Lesson Content --}}
         <div id="view-lesson">
             <div class="lesson-header-btn">
                 <span id="lh-title">Introduction to Laravel</span>
-                <span>&#x2192;</span>
+                
             </div>
             <div class="lesson-card">
                 <div class="lesson-card-topbar">
@@ -351,7 +389,7 @@
         <div id="view-quiz">
             <div class="lesson-header-btn">
                 <span id="qh-title">Quiz</span>
-                <span>&#x2192;</span>
+                
             </div>
             <div class="quiz-card" id="quiz-questions-container">
                 {{-- Populated by JS --}}
@@ -456,6 +494,8 @@ var _curModIdx     = 0;
 var _curLesIdx     = 0;
 var _totalQuizQ    = 0;          // total quiz questions across all modules
 var _moduleScores  = {};         // { modIdx: correctCount } — replaced on retake
+var _moduleAnswers = {};         // { modIdx: { qi: letter } } — saved on submit for view-only replay
+var _retakeQMap    = [];         // maps rendered question index → original question index on retake
 
 // Count total quiz questions on load
 document.addEventListener('DOMContentLoaded', function () {
@@ -467,6 +507,7 @@ function hideAllViews() {
     document.getElementById('view-welcome').style.display = 'none';
     document.getElementById('view-lesson').style.display  = 'none';
     document.getElementById('view-quiz').style.display    = 'none';
+    document.querySelector('.lesson-content').classList.remove('welcome-mode');
 }
 function toggleModule(listId, chevId) {
     const l = document.getElementById(listId), c = document.getElementById(chevId);
@@ -492,14 +533,14 @@ function showModuleWelcome(title, lessonCount, modCount, badgeCount, modIdx) {
     if (ta && !ta.classList.contains('completed')) ta.classList.add('active');
     _curModIdx = modIdx;
 
-    document.getElementById('wh-title').textContent     = title;
-    document.getElementById('wh-mod-title').textContent = 'Welcome to ' + title;
+    document.getElementById('wh-mod-title').textContent = title;
     document.getElementById('ws-mod').textContent       = modCount;
     document.getElementById('ws-les').textContent       = lessonCount;
     document.getElementById('ws-bdg').textContent       = badgeCount;
 
     hideAllViews();
     document.getElementById('view-welcome').style.display = 'flex';
+    document.querySelector('.lesson-content').classList.add('welcome-mode');
 }
 function continueFromWelcome() {
     const first = document.querySelector('#mg-' + _curModIdx + ' .lesson-item');
@@ -630,23 +671,54 @@ function handleQuizClick(modIdx) {
         alert('Please mark all lessons as complete before taking the quiz.');
         return;
     }
-    showQuizView(modIdx);
+    // If already submitted (viewed), open in read-only mode
+    const viewOnly = qbtn && qbtn.classList.contains('viewed');
+    showQuizView(modIdx, viewOnly);
 }
 
-/* ── Build quiz view (3 questions) ───────────────── */
-function showQuizView(modIdx) {
-    _curModIdx = modIdx;
-    const data = QUIZ_DATA[modIdx];
+/* ── Build quiz view ─────────────────────────────────
+   viewOnly  = true  → read-only review of past attempt
+   retakeOnly = true → only show questions answered wrong
+─────────────────────────────────────────────────── */
+function showQuizView(modIdx, viewOnly, retakeOnly) {
+    _curModIdx  = modIdx;
+    const data  = QUIZ_DATA[modIdx];
     if (!data) return;
 
-    document.getElementById('qh-title').textContent = data.title;
+    viewOnly   = viewOnly   || false;
+    retakeOnly = retakeOnly || false;
+    const savedAnswers = _moduleAnswers[modIdx] || {};
+
+    // Decide which questions to render
+    var questionsToShow; // array of { origIdx, q }
+    if (retakeOnly) {
+        questionsToShow = [];
+        data.questions.forEach(function(q, qi) {
+            const chosen = savedAnswers[qi];
+            if (chosen && chosen !== q.correct) {
+                questionsToShow.push({ origIdx: qi, q: q });
+            }
+        });
+        // Safety: if somehow all were correct, show all (shouldn't reach retake in that case)
+        if (questionsToShow.length === 0) questionsToShow = data.questions.map(function(q, qi){ return { origIdx: qi, q: q }; });
+    } else {
+        questionsToShow = data.questions.map(function(q, qi){ return { origIdx: qi, q: q }; });
+    }
+
+    // Store a map: rendered index → original index (used by submitQuiz to update correct slots)
+    _retakeQMap = questionsToShow.map(function(item){ return item.origIdx; });
+
+    const suffix = viewOnly ? ' — Review' : (retakeOnly ? ' — Retake (Wrong Answers)' : '');
+    document.getElementById('qh-title').textContent = data.title + suffix;
 
     const container = document.getElementById('quiz-questions-container');
     container.innerHTML = '';
 
-    data.questions.forEach(function(q, qi) {
-        // Divider between questions
-        if (qi > 0) {
+    questionsToShow.forEach(function(item, ri) {
+        const q   = item.q;
+        const qi  = item.origIdx;
+
+        if (ri > 0) {
             const hr = document.createElement('hr');
             hr.className = 'quiz-divider';
             container.appendChild(hr);
@@ -654,7 +726,7 @@ function showQuizView(modIdx) {
 
         const block = document.createElement('div');
         block.className = 'quiz-question-block';
-        block.id = 'qblock-' + qi;
+        block.id = 'qblock-' + ri;
 
         const label = document.createElement('div');
         label.className = 'quiz-q-label';
@@ -668,7 +740,7 @@ function showQuizView(modIdx) {
 
         const optWrap = document.createElement('div');
         optWrap.className = 'quiz-options';
-        optWrap.id = 'opts-' + qi;
+        optWrap.id = 'opts-' + ri;
 
         q.options.forEach(function(opt) {
             const div = document.createElement('div');
@@ -676,20 +748,47 @@ function showQuizView(modIdx) {
             div.dataset.letter = opt.letter;
             div.innerHTML = '<span class="quiz-opt-letter">' + opt.letter + '</span>'
                           + '<span class="quiz-opt-text">'   + opt.text   + '</span>';
-            div.onclick = function() {
-                optWrap.querySelectorAll('.quiz-opt').forEach(el => el.classList.remove('selected'));
-                div.classList.add('selected');
-            };
+
+            if (viewOnly) {
+                if (opt.letter === q.correct) {
+                    div.classList.add('correct-ans');
+                } else if (savedAnswers[qi] && savedAnswers[qi] === opt.letter) {
+                    div.classList.add('wrong-ans');
+                }
+                div.style.cursor = 'default';
+                div.style.pointerEvents = 'none';
+            } else {
+                div.onclick = function() {
+                    optWrap.querySelectorAll('.quiz-opt').forEach(el => el.classList.remove('selected'));
+                    div.classList.add('selected');
+                };
+            }
             optWrap.appendChild(div);
         });
         block.appendChild(optWrap);
         container.appendChild(block);
     });
 
-    // Reset result & buttons
-    document.getElementById('quiz-score-result').style.display  = 'none';
-    document.getElementById('btn-quiz-submit').style.display    = 'flex';
-    document.getElementById('btn-next-module').style.display    = 'none';
+    // Buttons
+    document.getElementById('btn-next-module').style.display = 'none';
+    document.getElementById('btn-retake').style.display      = 'none';
+
+    if (viewOnly) {
+        document.getElementById('btn-quiz-submit').style.display = 'none';
+        const scoreEl = document.getElementById('quiz-score-result');
+        const correct = _moduleScores[modIdx] !== undefined ? _moduleScores[modIdx] : '?';
+        const total   = data.questions.length;
+        const pct     = _moduleScores[modIdx] !== undefined ? Math.round((_moduleScores[modIdx] / total) * 100) : 0;
+        const pass    = pct >= (data.passingScore || 75);
+        scoreEl.innerHTML = pass
+            ? '\u2713 Passed — Score: ' + correct + '/' + total
+            : 'Score: ' + correct + '/' + total + ' — Keep practicing!';
+        scoreEl.className  = 'quiz-score-result ' + (pass ? 'pass' : 'fail');
+        scoreEl.style.display = 'block';
+    } else {
+        document.getElementById('quiz-score-result').style.display = 'none';
+        document.getElementById('btn-quiz-submit').style.display    = 'flex';
+    }
 
     hideAllViews();
     document.getElementById('view-quiz').style.display = 'flex';
@@ -701,29 +800,54 @@ function submitQuiz() {
     if (!data) return;
 
     let answered = true, correctCount = 0;
+    var answers = {};   // save selected letters BEFORE highlights overwrite classes
 
-    data.questions.forEach(function(q, qi) {
-        const selected = document.querySelector('#opts-' + qi + ' .quiz-opt.selected');
+    // _retakeQMap maps rendered index → original question index
+    // On a full quiz _retakeQMap = [0,1,2,...]; on retake it's only the wrong indices
+    var questionsInView = data.questions.map(function(q, qi){ return qi; });
+    if (_retakeQMap.length > 0 && _retakeQMap.length <= data.questions.length) {
+        questionsInView = _retakeQMap;
+    }
+
+    questionsInView.forEach(function(origQi, ri) {
+        const q        = data.questions[origQi];
+        const selected = document.querySelector('#opts-' + ri + ' .quiz-opt.selected');
         if (!selected) { answered = false; return; }
 
         const letter    = selected.dataset.letter;
+        answers[origQi] = letter;                       // ← save to original index
         const isCorrect = letter === q.correct;
         if (isCorrect) correctCount++;
 
         // Highlight options
-        document.querySelectorAll('#opts-' + qi + ' .quiz-opt').forEach(function(opt) {
+        document.querySelectorAll('#opts-' + ri + ' .quiz-opt').forEach(function(opt) {
             opt.classList.remove('selected');
             if (opt.dataset.letter === q.correct) opt.classList.add('correct-ans');
             else if (opt.dataset.letter === letter && !isCorrect) opt.classList.add('wrong-ans');
         });
     });
 
+    // Merge retake answers back into full answer map (keep correct ones from previous attempt)
+    var prevAnswers = _moduleAnswers[_curModIdx] || {};
+    Object.keys(answers).forEach(function(k){ prevAnswers[k] = answers[k]; });
+    answers = prevAnswers;
+
     if (!answered) {
         alert('Please answer all questions before submitting.');
         return;
     }
 
-    // Store correct count for this module (replaces previous attempt — retakes don't stack)
+    _moduleAnswers[_curModIdx] = answers;   // store for view-only replay
+
+    // For retakes: add newly-correct answers to previous correct count (only the retaken subset was scored)
+    if (_retakeQMap.length > 0 && _retakeQMap.length < data.questions.length) {
+        // Count how many questions from the full set are now correct
+        var totalCorrect = 0;
+        data.questions.forEach(function(q, qi) {
+            if (answers[qi] === q.correct) totalCorrect++;
+        });
+        correctCount = totalCorrect;
+    }
     _moduleScores[_curModIdx] = correctCount;
     updateProgress();
 
@@ -745,6 +869,14 @@ function submitQuiz() {
 
     if (pass) {
         // ✅ PASSED → unlock next module
+        // Mark this quiz button as viewed (read-only)
+        const doneBtn = document.getElementById('qbtn-' + _curModIdx);
+        if (doneBtn) {
+            doneBtn.classList.remove('unlocked');
+            doneBtn.classList.add('viewed');
+            doneBtn.textContent = 'VIEW';
+            doneBtn.title = 'View your quiz results';
+        }
         if (hasNextMod) {
             unlockModule(_curModIdx + 1);
             const nb = document.getElementById('btn-next-module');
@@ -770,11 +902,11 @@ function unlockModule(modIdx) {
     if (sub) sub.innerHTML = '<span style="color:var(--green);font-size:11px;font-weight:700;">✓ Unlocked</span>';
 }
 
-/* ── Retake quiz ──────────────────────────────────── */
+/* ── Retake quiz (wrong questions only) ───────────── */
 function retakeQuiz() {
-    document.getElementById('btn-retake').style.display       = 'none';
+    document.getElementById('btn-retake').style.display        = 'none';
     document.getElementById('quiz-score-result').style.display = 'none';
-    showQuizView(_curModIdx);   // next submit will overwrite _moduleScores[_curModIdx]
+    showQuizView(_curModIdx, false, true);   // retakeOnly=true → only wrong questions shown
 }
 
 /* ── Go to next module ────────────────────────────── */

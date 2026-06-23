@@ -2,6 +2,36 @@
 
 use Illuminate\Support\Facades\Route;
 
+// ══════════════════════════════════════════════════════════════════════════
+// GLOBAL VIEW COMPOSER
+// Runs on every view render and merges saved profile data (avatar, name,
+// role) from the session into the $user object — so the topbar avatar and
+// username stay up-to-date on ALL pages automatically.
+// ══════════════════════════════════════════════════════════════════════════
+app('view')->composer('*', function (\Illuminate\View\View $view) {
+    try {
+        $saved = session('profile_data', []);
+    } catch (\Throwable $e) {
+        return; // session not available yet (e.g. during boot)
+    }
+
+    if (empty($saved)) return;
+
+    $data = $view->getData();
+    if (! isset($data['user'])) return;
+
+    $user = $data['user'];
+
+    // Merge whichever fields were saved in the session
+    foreach (['name', 'role', 'avatar_url', 'email', 'phone', 'location'] as $field) {
+        if (array_key_exists($field, $saved) && ! empty($saved[$field])) {
+            $user->$field = $saved[$field];
+        }
+    }
+
+    $view->with('user', $user);
+});
+
 Route::get('/', fn() => view('Homepage'))->name('Homepage');
 Route::get('/login', fn() => view('login'))->name('login');
 Route::get('/register', fn() => view('register'))->name('register');
@@ -248,29 +278,87 @@ Route::get('/certificates', function () {
     ]);
 })->name('certificates.index');
 
+// ── Profile ────────────────────────────────────────────────────────────────
+
 Route::get('/profile', function () {
+
+    // ── Default / seed data ───────────────────────────────────────────────
+    $defaults = [
+        'name'          => 'Ana Maria',
+        'role'          => 'Student',
+        'phone'         => '09345678912',
+        'email'         => 'Ana123@gmail.com',
+        'joined_at'     => \Carbon\Carbon::parse('2021-01-15'),   // always Carbon
+        'location'      => 'San, Juan, Pangasinan',
+        'avatar_url'    => null,
+        'about'         => 'Passionate about Web Development and App Development. Problem Solving Love to Learn new Skills and More',
+        'date_of_birth' => 'October 12, 2003',
+        'gender'        => 'Male',
+        'education'     => 'BS Information Technology',
+        'bio'           => 'Photo Editing Skilled. Frontend Web Designer for Wordpress. Can Edit Multiple Frames in Just 1 Hour',
+        'language'      => 'English',
+        'timezone'      => 'Asia/Manila',
+    ];
+
+    // ── Merge with any session-persisted edits ────────────────────────────
+    $saved  = session('profile_data', []);
+    $merged = array_merge($defaults, $saved);
+
+    // joined_at must always be a Carbon instance (never from form input)
+    $merged['joined_at'] = $defaults['joined_at'];
+
+    // Normalise date_of_birth to a human-readable format for display
+    if (!empty($merged['date_of_birth'])) {
+        try {
+            $merged['date_of_birth'] = \Carbon\Carbon::parse($merged['date_of_birth'])->format('F j, Y');
+        } catch (\Throwable $e) { /* keep as-is if it can't be parsed */ }
+    }
+
     return view('Student_Profile', [
-        'user' => (object) [
-            'name'         => 'Ana Maria',
-            'role'         => 'Student',
-            'phone'        => '09345678912',
-            'email'        => 'Ana123@gmail.com',
-            'joined_at'    => \Carbon\Carbon::parse('2021-01-15'),
-            'location'     => 'San, Juan, Pangasinan',
-            'avatar_url'   => null,
-            'about'        => 'Passionate about Web Development and App Development. Problem Solving Love to Learn new Skills and More',
-            'date_of_birth'=> 'October 12, 2003',
-            'gender'       => 'Male',
-            'education'    => 'BS Information Technology',
-            'bio'          => 'Photo Editing Skilled. Frontend Web Designer for Wordpress. Can Edit Multiple Frames in Just 1 Hour',
-            'language'     => 'English',
-            'timezone'     => '(GMT+8:00) Asia/Manila',
-        ],
+        'user'         => (object) $merged,
         'progress'     => ['completed' => 12, 'total' => 20],
         'achievements' => [],
         'activities'   => [],
     ]);
 })->name('profile.show');
+
+// ✅ Handle Edit Profile form — persists to session until DB is wired up
+Route::patch('/profile', function (\Illuminate\Http\Request $request) {
+
+    // Start from what was already in session so untouched fields are kept
+    $existing = session('profile_data', []);
+
+    // Overwrite with every field the form sent
+    $updated = array_merge($existing, $request->only([
+        'name', 'role', 'phone', 'location',
+        'about', 'date_of_birth', 'gender', 'education', 'bio',
+        'email', 'language', 'timezone',
+    ]));
+
+    // ── Avatar ─────────────────────────────────────────────────────────────
+    // JS resized the image client-side and stored it as a base64 data-URL in
+    // the hidden "avatar_base64" field — so no PHP file-upload limits apply.
+    if ($request->filled('avatar_base64')) {
+        $dataUrl = $request->input('avatar_base64');
+        // Basic sanity check: must be an image data-URL
+        if (str_starts_with($dataUrl, 'data:image/')) {
+            $updated['avatar_url'] = $dataUrl;
+        }
+    }
+
+    // Persist the full updated profile to session
+    session(['profile_data' => $updated]);
+
+    return redirect()->route('profile.show')->with('success', 'Profile updated successfully!');
+
+    // ── TODO (when DB is ready) ────────────────────────────────────────────
+    // Replace the two lines above with:
+    //   $user = \Illuminate\Support\Facades\Auth::user();
+    //   $user->fill($updated)->save();
+    //   return redirect()->route('profile.show')->with('success', 'Profile updated successfully!');
+})->name('profile.update');
+
+// ──────────────────────────────────────────────────────────────────────────
 
 Route::get('/pathways', function () {
     return view('Student_MyPathways', [
